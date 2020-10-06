@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/antonmedv/expr/ast"
-	"github.com/antonmedv/expr/conf"
-	"github.com/antonmedv/expr/file"
-	"github.com/antonmedv/expr/parser"
+	"github.com/fairjungle/expr/ast"
+	"github.com/fairjungle/expr/conf"
+	"github.com/fairjungle/expr/file"
+	"github.com/fairjungle/expr/parser"
 )
 
 func Check(tree *parser.Tree, config *conf.Config) (reflect.Type, error) {

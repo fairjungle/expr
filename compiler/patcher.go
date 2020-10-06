@@ -1,8 +1,8 @@
 package compiler
 
 import (
-	"github.com/antonmedv/expr/ast"
-	"github.com/antonmedv/expr/conf"
+	"github.com/fairjungle/expr/ast"
+	"github.com/fairjungle/expr/conf"
 )
 
 type operatorPatcher struct {

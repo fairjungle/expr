@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/antonmedv/expr/ast"
-	"github.com/antonmedv/expr/file"
+	"github.com/fairjungle/expr/ast"
+	"github.com/fairjungle/expr/file"
 
-	"github.com/antonmedv/expr"
+	"github.com/fairjungle/expr"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

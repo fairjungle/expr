@@ -1,7 +1,7 @@
 package optimizer
 
 import (
-	. "github.com/antonmedv/expr/ast"
+	. "github.com/fairjungle/expr/ast"
 )
 
 type constRange struct{}

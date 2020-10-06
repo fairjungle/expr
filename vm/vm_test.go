@@ -5,11 +5,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/antonmedv/expr/checker"
-	"github.com/antonmedv/expr/compiler"
-	"github.com/antonmedv/expr/conf"
-	"github.com/antonmedv/expr/parser"
-	"github.com/antonmedv/expr/vm"
+	"github.com/fairjungle/expr/checker"
+	"github.com/fairjungle/expr/compiler"
+	"github.com/fairjungle/expr/conf"
+	"github.com/fairjungle/expr/parser"
+	"github.com/fairjungle/expr/vm"
 	"github.com/stretchr/testify/require"
 )
 

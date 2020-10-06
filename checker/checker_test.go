@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/antonmedv/expr"
-	"github.com/antonmedv/expr/checker"
-	"github.com/antonmedv/expr/conf"
-	"github.com/antonmedv/expr/parser"
+	"github.com/fairjungle/expr"
+	"github.com/fairjungle/expr/checker"
+	"github.com/fairjungle/expr/conf"
+	"github.com/fairjungle/expr/parser"
 	"github.com/stretchr/testify/assert"
 )
 
