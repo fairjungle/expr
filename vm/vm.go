@@ -13,6 +13,12 @@ var (
 	MemoryBudget int = 1e6
 )
 
+// FIXME Following vars should be in Config, and config should be accessible from VM
+var (
+	MethodPrefix = ""
+	TagName      = "expr"
+)
+
 func Run(program *Program, env interface{}) (interface{}, error) {
 	if program == nil {
 		return nil, fmt.Errorf("program is nil")

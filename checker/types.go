@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	"github.com/fairjungle/expr/ast"
+	"github.com/fairjungle/expr/vm"
 )
 
 var (
@@ -209,7 +210,7 @@ func fieldType(ntype reflect.Type, name string) (reflect.Type, bool) {
 			// First check all struct's fields.
 			for i := 0; i < ntype.NumField(); i++ {
 				f := ntype.Field(i)
-				if f.Name == name {
+				if f.Name == name || vm.IsTag(f, name) {
 					return f.Type, true
 				}
 			}

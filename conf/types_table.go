@@ -1,11 +1,16 @@
 package conf
 
-import "reflect"
+import (
+	"reflect"
+
+	"github.com/fairjungle/expr/vm"
+)
 
 type Tag struct {
 	Type      reflect.Type
 	Method    bool
 	Ambiguous bool
+	RealName  string
 }
 
 type TypesTable map[string]Tag
@@ -39,7 +44,7 @@ func CreateTypesTable(i interface{}) TypesTable {
 		// all embedded structs methods as well, no need to recursion.
 		for i := 0; i < t.NumMethod(); i++ {
 			m := t.Method(i)
-			types[m.Name] = Tag{Type: m.Type, Method: true}
+			types[vm.MethodName(m)] = Tag{Type: m.Type, Method: true, RealName: m.Name}
 		}
 
 	case reflect.Map:
@@ -53,7 +58,7 @@ func CreateTypesTable(i interface{}) TypesTable {
 		// A map may have method too.
 		for i := 0; i < t.NumMethod(); i++ {
 			m := t.Method(i)
-			types[m.Name] = Tag{Type: m.Type, Method: true}
+			types[vm.MethodName(m)] = Tag{Type: m.Type, Method: true, RealName: m.Name}
 		}
 	}
 
@@ -82,7 +87,7 @@ func FieldsFromStruct(t reflect.Type) TypesTable {
 				}
 			}
 
-			types[f.Name] = Tag{Type: f.Type}
+			types[vm.FieldName(f)] = Tag{Type: f.Type, RealName: f.Name}
 		}
 	}
 

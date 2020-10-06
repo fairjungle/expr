@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"strings"
 )
 
 type Call struct {
@@ -46,7 +47,7 @@ func fetch(from interface{}, i interface{}) interface{} {
 		}
 
 	case reflect.Struct:
-		value := v.FieldByName(reflect.ValueOf(i).String())
+		value := fieldByName(v, reflect.ValueOf(i).String())
 		if value.IsValid() && value.CanInterface() {
 			return value.Interface()
 		}
@@ -90,7 +91,7 @@ func FetchFn(from interface{}, name string) reflect.Value {
 
 	// Methods can be defined on any type.
 	if v.NumMethod() > 0 {
-		method := v.MethodByName(name)
+		method := methodByName(v, name)
 		if method.IsValid() {
 			return method
 		}
@@ -153,7 +154,8 @@ func in(needle interface{}, array interface{}) bool {
 		if !n.IsValid() || n.Kind() != reflect.String {
 			panic(fmt.Sprintf("cannot use %T as field name of %T", needle, array))
 		}
-		value := v.FieldByName(n.String())
+
+		value := fieldByName(v, n.String())
 		if value.IsValid() {
 			return true
 		}
@@ -340,4 +342,51 @@ func isNil(v interface{}) bool {
 	default:
 		return false
 	}
+}
+
+// IsTag returns true if field has given tag value.
+func IsTag(f reflect.StructField, value string) bool {
+	return (len(TagName) > 0) && (strings.Split(f.Tag.Get(TagName), ",")[0] == value)
+}
+
+// FieldName computes field name.
+func FieldName(f reflect.StructField) string {
+	if len(TagName) > 0 {
+		if name := strings.Split(f.Tag.Get(TagName), ",")[0]; name != "" {
+			return name
+		}
+	}
+	return f.Name
+}
+
+func fieldByName(sval reflect.Value, name string) reflect.Value {
+	if len(TagName) > 0 {
+		stype := sval.Type()
+		for i := 0; i < stype.NumField(); i++ {
+			f := stype.Field(i)
+			if IsTag(f, name) {
+				name = f.Name
+				break
+			}
+		}
+	}
+	return sval.FieldByName(name)
+}
+
+// MethodName computes method name.
+func MethodName(f reflect.Method) string {
+	if len(MethodPrefix) > 0 && strings.HasPrefix(f.Name, MethodPrefix) {
+		return strings.TrimPrefix(f.Name, MethodPrefix)
+	}
+	return f.Name
+}
+
+func methodByName(sval reflect.Value, name string) reflect.Value {
+	if len(MethodPrefix) > 0 {
+		realName := fmt.Sprintf("%s%s", MethodPrefix, name)
+		if _, ok := sval.Type().MethodByName(realName); ok {
+			name = realName
+		}
+	}
+	return sval.MethodByName(name)
 }

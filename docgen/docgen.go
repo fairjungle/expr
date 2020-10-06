@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/fairjungle/expr/conf"
+	"github.com/fairjungle/expr/vm"
 )
 
 // Kind can be any of array, map, struct, func, string, int, float, bool or any.
@@ -193,7 +194,7 @@ appendix:
 		}
 
 		for name, field := range conf.FieldsFromStruct(t) {
-			if isPrivate(name) || isProtobuf(name) || field.Ambiguous {
+			if isPrivate(field.RealName) || isProtobuf(field.RealName) || field.Ambiguous {
 				continue
 			}
 			a.Fields[Identifier(name)] = c.use(field.Type)
@@ -203,7 +204,7 @@ appendix:
 			if isPrivate(m.Name) || isProtobuf(m.Name) {
 				continue
 			}
-			a.Fields[Identifier(m.Name)] = c.use(m.Type, fromMethod(true))
+			a.Fields[Identifier(vm.MethodName(m))] = c.use(m.Type, fromMethod(true))
 		}
 	}
 
